@@ -10,7 +10,7 @@ function isHabitable(planet) {
 		planet['koi_prad'] < 1.6
 	);
 }
-
+console.log('test');
 fs.createReadStream('./kepler_data.csv')
 	.pipe(parse({ comment: '#', columns: true }))
 	.on('data', (data) => {
