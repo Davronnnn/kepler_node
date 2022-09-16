@@ -1,26 +1,19 @@
-const fs = require('fs');
-const { parse } = require('csv-parse');
-const habitablePlanets = [];
+const http = require('http');
 
-function isHabitable(planet) {
-	return (
-		planet['koi_disposition'] === 'CONFIRMED' &&
-		planet['koi_insol'] > 0.36 &&
-		planet['koi_insol'] < 1.11 &&
-		planet['koi_prad'] < 1.6
+const PORT = 3000;
+const server = http.createServer();
+
+server.on('request', (req, res) => {
+	console.log(req, res);
+	res.writeHead(200, { 'Content-Type': 'application/json' });
+	res.end(
+		JSON.stringify({
+			id: 1,
+			name: 'Davron',
+		})
 	);
-}
-console.log('test');
-fs.createReadStream('./kepler_data.csv')
-	.pipe(parse({ comment: '#', columns: true }))
-	.on('data', (data) => {
-		if (isHabitable(data)) {
-			habitablePlanets.push(data);
-		}
-	})
-	.on('error', (error) => {
-		console.log('error' + error);
-	})
-	.on('end', () => {
-		console.log(habitablePlanets.length);
-	});
+});
+
+server.listen(PORT, () => {
+	console.log('server is running' + ' on port ' + PORT);
+});
